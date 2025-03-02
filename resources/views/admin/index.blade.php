@@ -50,4 +50,16 @@
         <a href="{{ $version->getDonations() }}"><button class="btn btn-success" style="width:100%;"><i class="fa fa-fw fa-money"></i> Support the Project</button></a>
     </div>
 </div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Backup Config Editor</h3>
+            </div>
+            <div class="box-body">
+                <a href="{{ route('admin.backups') }}" class="btn btn-primary">Edit Backup Config</a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
