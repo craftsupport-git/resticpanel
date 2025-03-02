@@ -123,6 +123,22 @@ class BackupManager
     }
 
     /**
+     * Creates a new Restic adapter.
+     */
+    public function createResticAdapter(array $config): FilesystemAdapter
+    {
+        return new ResticFilesystem($config['repository'], $config['password'], $config['path'], $config['options']);
+    }
+
+    /**
+     * Creates a new Borg adapter.
+     */
+    public function createBorgAdapter(array $config): FilesystemAdapter
+    {
+        return new BorgFilesystem($config['repository'], $config['password'], $config['path'], $config['options']);
+    }
+
+    /**
      * Returns the configuration associated with a given backup type.
      */
     protected function getConfig(string $name): array

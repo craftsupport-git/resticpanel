@@ -62,5 +62,25 @@ return [
 
             'storage_class' => env('AWS_BACKUPS_STORAGE_CLASS'),
         ],
+
+        // Configuration for storing backups using Restic.
+        'restic' => [
+            'adapter' => Backup::ADAPTER_RESTIC,
+
+            'repository' => env('RESTIC_REPOSITORY'),
+            'password' => env('RESTIC_PASSWORD'),
+            'path' => env('RESTIC_PATH', '/backups'),
+            'options' => env('RESTIC_OPTIONS', '--verbose'),
+        ],
+
+        // Configuration for storing backups using Borg.
+        'borg' => [
+            'adapter' => Backup::ADAPTER_BORG,
+
+            'repository' => env('BORG_REPOSITORY'),
+            'password' => env('BORG_PASSWORD'),
+            'path' => env('BORG_PATH', '/backups'),
+            'options' => env('BORG_OPTIONS', '--verbose'),
+        ],
     ],
 ];

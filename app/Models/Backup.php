@@ -32,6 +32,8 @@ class Backup extends Model
 
     public const ADAPTER_WINGS = 'wings';
     public const ADAPTER_AWS_S3 = 's3';
+    public const ADAPTER_RESTIC = 'restic';
+    public const ADAPTER_BORG = 'borg';
 
     protected $table = 'backups';
 
