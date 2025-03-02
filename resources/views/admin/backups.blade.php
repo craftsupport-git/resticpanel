@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
 @section('title')
-    Backup Configuration
+    Backup Config Editor
 @endsection
 
 @section('content-header')
-    <h1>Backup Configuration<small>Manage backup settings for Restic and Borg</small></h1>
+    <h1>Backup Config Editor<small>Edit backup configuration settings</small></h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('admin.index') }}">Admin</a></li>
-        <li class="active">Backup Configuration</li>
+        <li class="active">Backup Config Editor</li>
     </ol>
 @endsection
 
