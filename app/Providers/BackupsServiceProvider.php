@@ -9,7 +9,7 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 class BackupsServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Register the S3 backup disk.
+     * Register the S3, Restic, and Borg backup disks.
      */
     public function register(): void
     {

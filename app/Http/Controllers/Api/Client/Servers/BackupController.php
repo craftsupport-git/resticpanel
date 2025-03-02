@@ -164,7 +164,7 @@ class BackupController extends ClientApiController
             throw new AuthorizationException();
         }
 
-        if ($backup->disk !== Backup::ADAPTER_AWS_S3 && $backup->disk !== Backup::ADAPTER_WINGS) {
+        if ($backup->disk !== Backup::ADAPTER_AWS_S3 && $backup->disk !== Backup::ADAPTER_WINGS && $backup->disk !== Backup::ADAPTER_RESTIC && $backup->disk !== Backup::ADAPTER_BORG) {
             throw new BadRequestHttpException('The backup requested references an unknown disk driver type and cannot be downloaded.');
         }
 
@@ -208,7 +208,7 @@ class BackupController extends ClientApiController
         $log->transaction(function () use ($backup, $server, $request) {
             // If the backup is for an S3 file we need to generate a unique Download link for
             // it that will allow Wings to actually access the file.
-            if ($backup->disk === Backup::ADAPTER_AWS_S3) {
+            if ($backup->disk === Backup::ADAPTER_AWS_S3 || $backup->disk === Backup::ADAPTER_RESTIC || $backup->disk === Backup::ADAPTER_BORG) {
                 $url = $this->downloadLinkService->handle($backup, $request->user());
             }
 
@@ -218,6 +218,29 @@ class BackupController extends ClientApiController
 
             $this->daemonRepository->setServer($server)->restore($backup, $url ?? null, $request->input('truncate'));
         });
+
+        return new JsonResponse([], JsonResponse::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Mounts a backup for a given server instance.
+     *
+     * @throws \Throwable
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function mount(Request $request, Server $server, Backup $backup): JsonResponse
+    {
+        if (!$request->user()->can(Permission::ACTION_BACKUP_MOUNT, $server)) {
+            throw new AuthorizationException();
+        }
+
+        if ($backup->disk !== Backup::ADAPTER_RESTIC && $backup->disk !== Backup::ADAPTER_BORG) {
+            throw new BadRequestHttpException('The backup requested references an unknown disk driver type and cannot be mounted.');
+        }
+
+        $this->daemonRepository->setServer($server)->mount($backup);
+
+        Activity::event('server:backup.mount')->subject($backup)->property('name', $backup->name)->log();
 
         return new JsonResponse([], JsonResponse::HTTP_NO_CONTENT);
     }
