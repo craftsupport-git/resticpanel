@@ -239,3 +239,13 @@ Route::group(['prefix' => 'backups'], function () {
     Route::get('/', [Admin\BackupConfigController::class, 'index'])->name('admin.backups');
     Route::patch('/update', [Admin\BackupConfigController::class, 'update'])->name('admin.backups.update');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Backup Config Controller Routes
+|--------------------------------------------------------------------------
+|
+| Endpoint: /backup-config
+|
+*/
+Route::get('/backup-config', [Admin\BackupConfigController::class, 'index']);
